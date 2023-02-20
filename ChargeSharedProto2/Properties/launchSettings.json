@@ -1,0 +1,54 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://chargesharedkeyvault.vault.azure.net/",
+        "AZURE_USERNAME": "falco@wolkorte.nl"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5077"
+    },
+    "https": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://chargesharedkeyvault.vault.azure.net/",
+        "AZURE_USERNAME": "falco@wolkorte.nl"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7234;http://localhost:5077"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://chargesharedkeyvault.vault.azure.net/",
+        "AZURE_USERNAME": "falco@wolkorte.nl"
+      }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true,
+      "environmentVariables": {
+        "VaultUri": "https://chargesharedkeyvault.vault.azure.net/",
+        "AZURE_USERNAME": "falco@wolkorte.nl"
+      }
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:48229",
+      "sslPort": 44372
+    }
+  }
+}
