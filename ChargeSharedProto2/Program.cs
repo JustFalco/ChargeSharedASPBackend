@@ -24,12 +24,13 @@ var jwtConfig = configuration.GetSection("JWT");
 var secretKey = jwtConfig["secret"];
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-var connectionString2 = builder.Configuration.GetConnectionString("DefaultConnection2") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+var azureConnectionString = builder.Configuration.GetConnectionString("SecundaryConnection") ?? throw new InvalidOperationException("Connection string 'SecundaryConnection' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(azureConnectionString));
 builder.Services.AddDbContext<ChargeShareDbContext>(options =>
-    options.UseSqlServer(connectionString2));
+    options.UseSqlServer(azureConnectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -44,7 +45,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("angularfrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:4201").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+        policy.WithOrigins("https://localhost:8080").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+        policy.WithOrigins("https://chargesharedwebtest.azurewebsites.net").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
     });
 });
 

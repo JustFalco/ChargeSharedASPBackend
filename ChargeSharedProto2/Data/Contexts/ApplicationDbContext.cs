@@ -19,7 +19,7 @@ namespace ChargeSharedProto2.Data.Contexts
             : base(options, operationalStoreOptions)
         {
             _configuration = configuration;
-            dbConnectionString = _configuration.GetConnectionString("DefaultConnection");
+            dbConnectionString = _configuration.GetConnectionString("SecundaryConnection");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

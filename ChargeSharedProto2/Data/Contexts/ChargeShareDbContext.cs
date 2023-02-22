@@ -15,13 +15,13 @@ namespace ChargeSharedProto2.Data.Contexts
         public ChargeShareDbContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            dbConnectionString = _configuration.GetConnectionString("DefaultConnection2");
+            dbConnectionString = _configuration.GetConnectionString("SecundaryConnection");
         }
 
         public ChargeShareDbContext(DbContextOptions<ChargeShareDbContext> context, IConfiguration configuration) : base(context)
         {
             _configuration = configuration;
-            dbConnectionString = _configuration.GetConnectionString("DefaultConnection2");
+            dbConnectionString = _configuration.GetConnectionString("SecundaryConnection");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
