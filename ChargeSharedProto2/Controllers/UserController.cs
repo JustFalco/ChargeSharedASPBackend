@@ -104,12 +104,23 @@ namespace ChargeSharedProto2.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{email}")]
-        public async void Put(string email, [FromBody] UserDataDTO value)
+        public async Task<IActionResult> Put(string email, [FromBody] UserDataDTO value)
         {
             if (ModelState.IsValid)
             {
-                await _userService.ChangeUserData(value, email);
+                try
+                {
+                    var result = await _userService.ChangeUserData(value, email);
+                    return Ok(result);
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
+                
             }
+
+            return BadRequest("Model not valid");
         }
 
         // DELETE api/<UserController>/5

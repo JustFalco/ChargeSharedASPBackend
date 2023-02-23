@@ -86,7 +86,7 @@ namespace ChargeSharedProto2.Services
 
         public async Task<ApplicationUser> ChangeUserData(UserDataDTO userData, string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            ApplicationUser user = await _userManager.FindByEmailAsync(email);
             
             if (user == null)
             {
@@ -97,8 +97,17 @@ namespace ChargeSharedProto2.Services
             user.MiddleName = userData.MiddleName;
             user.LastName = userData.LastName;
             
-            var result = await _userManager.UpdateAsync(user);
-            return user;
+            IdentityResult result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return user;
+            }
+            else
+            {
+                throw new Exception("Cannot update user");
+            }
+            
         }
     }
 }
