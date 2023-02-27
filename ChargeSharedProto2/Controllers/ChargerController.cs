@@ -17,13 +17,15 @@ namespace ChargeSharedProto2.Controllers
         private readonly IChargeStationRepository _repository;
         private readonly IAdresService _adresService;
         private readonly IAdresRepository _adresRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         private IEnumerable<IdentityError> _errors { get; set; }
 
-        public ChargerController(IChargeStationRepository repository, IAdresService adresService, IAdresRepository adresRepository)
+        public ChargerController(IChargeStationRepository repository, IAdresService adresService, IAdresRepository adresRepository, UserManager<ApplicationUser> userManager)
         {
             _repository = repository;
             _adresService = adresService;
             _adresRepository = adresRepository;
+            _userManager = userManager;
         }
 
         // GET: api/chargers
@@ -71,6 +73,8 @@ namespace ChargeSharedProto2.Controllers
                         }
                     }
 
+                    ApplicationUser chargerOwner = await _userManager.FindByEmailAsync(charger.OwnerEmail);
+                    
                     ChargeStation newChargeStation = new ChargeStation
                     {
                         ChargerType = (ChargerType)charger.chargerType,
@@ -78,6 +82,7 @@ namespace ChargeSharedProto2.Controllers
                         PricePerHour = charger.pricePerHour,
                         QuickCharge = charger.quickcharge,
                         Adres = adresResult,
+                        Owner = chargerOwner
                     };
 
                     var result = await _repository.SaveChargeStationAsync(newChargeStation);
@@ -107,8 +112,18 @@ namespace ChargeSharedProto2.Controllers
 
         // DELETE api/<ChargerController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            try
+            {
+                _repository.RemoveChargestationById(id);
+                return Ok("Charger has been removed");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            
         }
     }
 }

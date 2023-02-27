@@ -1,5 +1,6 @@
 ﻿using ChargeSharedProto2.Data.Contexts;
 using ChargeSharedProto2.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChargeSharedProto2.Data.Repositories
@@ -7,9 +8,12 @@ namespace ChargeSharedProto2.Data.Repositories
     public class ChargeStationRepository : IChargeStationRepository
     {
         private readonly ChargeShareDbContext _context;
-        public ChargeStationRepository(ChargeShareDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public ChargeStationRepository(ChargeShareDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         /*
@@ -33,6 +37,20 @@ namespace ChargeSharedProto2.Data.Repositories
             await _context.SaveChangesAsync();
 
             return chargeStation;
+        }
+
+        public async Task<List<ChargeStation>> GetAllChargersFromUserAsync(string email)
+        {
+            //TODO add checks
+            var result = _context.Chargers.Where(c => c.Owner.Email == email).ToList();
+
+            return result;
+        }
+
+        public void RemoveChargestationById(int id)
+        {
+            //TODO add checks
+            _context.Chargers.Where(c => c.Id == id).ExecuteDelete();
         }
     }
 }

@@ -4,6 +4,7 @@ using ChargeSharedProto2.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChargeSharedProto2.Migrations.ChargeShareDb
 {
     [DbContext(typeof(ChargeShareDbContext))]
-    partial class ChargeShareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230227173935_ChangedChargerModel")]
+    partial class ChangedChargerModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

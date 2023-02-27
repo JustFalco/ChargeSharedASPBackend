@@ -10,11 +10,9 @@ namespace ChargeSharedProto2.Models
         public string Name { get; set; }
         [Required]
         public UserAdres Adres { get; set; }
-
-        /*[JsonIgnore]
-        public int OwnerId { get; set; }
+        
         [JsonIgnore]
-        public ApplicationUser Owner { get; set; }*/
+        public ApplicationUser Owner { get; set; }
         public ChargerType ChargerType { get; set; }
         public double PricePerHour { get; set; }
         public bool QuickCharge { get; set; }
