@@ -26,17 +26,31 @@ namespace ChargeSharedProto2.Data.Repositories
 
         public ChargeStation GetChargerById(int id)
         {
-            return _context.Chargers.Where(c => c.Id == id).Include(c => c.Adres).First();
+            return _context.Chargers.Where(c => c.Id == id).Include(c => c.Adres).Include(c => c.Owner).First();
         }
 
-        public async Task<ChargeStation> SaveChargeStationAsync(ChargeStation chargeStation)
+        public async Task<ChargeStation> SaveChargeStationAsync(ChargeStation chargeStation, string email)
         {
-            if (chargeStation == null) throw new ArgumentNullException();
+            try
+            {
+                if (chargeStation == null) throw new ArgumentNullException();
 
-            _context.Chargers.Add(chargeStation);
-            await _context.SaveChangesAsync();
+                _context.Chargers.Add(chargeStation);
+                
+                ApplicationUser chargerOwner = await _userManager.FindByEmailAsync(email);
 
-            return chargeStation;
+                chargeStation.OwnerId = chargerOwner!.Id;
+
+                await _context.SaveChangesAsync();
+
+                return chargeStation;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
         }
 
         public async Task<List<ChargeStation>> GetAllChargersFromUserAsync(string email)

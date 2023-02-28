@@ -11,7 +11,12 @@ namespace ChargeSharedProto2.Models
         [Required]
         public UserAdres Adres { get; set; }
         
+        [Required]
         [JsonIgnore]
+        public string OwnerId { get; set; }
+        
+        [JsonIgnore]
+        [Required]
         public ApplicationUser Owner { get; set; }
         public ChargerType ChargerType { get; set; }
         public double PricePerHour { get; set; }

@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ChargeSharedProto2.Migrations.ChargeShareDb
+namespace ChargeSharedProto2.Migrations
 {
     [DbContext(typeof(ChargeShareDbContext))]
-    [Migration("20230227173935_ChangedChargerModel")]
-    partial class ChangedChargerModel
+    [Migration("20230228154933_ChargerModelChange")]
+    partial class ChargerModelChange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,6 +111,7 @@ namespace ChargeSharedProto2.Migrations.ChargeShareDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OwnerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("PricePerHour")
@@ -185,7 +186,9 @@ namespace ChargeSharedProto2.Migrations.ChargeShareDb
 
                     b.HasOne("ChargeSharedProto2.Models.ApplicationUser", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Adres");
 

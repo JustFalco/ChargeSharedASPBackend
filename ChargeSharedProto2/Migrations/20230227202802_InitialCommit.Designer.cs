@@ -4,16 +4,19 @@ using ChargeSharedProto2.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ChargeSharedProto2.Migrations.ChargeShareDb
+namespace ChargeSharedProto2.Migrations
 {
     [DbContext(typeof(ChargeShareDbContext))]
-    partial class ChargeShareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230227202802_InitialCommit")]
+    partial class InitialCommit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,6 +111,7 @@ namespace ChargeSharedProto2.Migrations.ChargeShareDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OwnerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("PricePerHour")
@@ -182,7 +186,9 @@ namespace ChargeSharedProto2.Migrations.ChargeShareDb
 
                     b.HasOne("ChargeSharedProto2.Models.ApplicationUser", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Adres");
 

@@ -43,6 +43,13 @@ namespace ChargeSharedProto2.Controllers
             return _repository.GetChargerById(id);
         }
 
+        [HttpGet("email={email}")]
+        public async Task<IActionResult> GetAllChargersFromUser(string email)
+        {
+            var result = await _repository.GetAllChargersFromUserAsync(email);
+            return Ok(result);
+        }
+
         // POST api/<ChargerController>
         /*[Authorize]*/
         [HttpPost]
@@ -68,25 +75,31 @@ namespace ChargeSharedProto2.Controllers
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e);
-                            throw;
+                            return BadRequest(e.Message);
                         }
                     }
-
-                    ApplicationUser chargerOwner = await _userManager.FindByEmailAsync(charger.OwnerEmail);
                     
-                    ChargeStation newChargeStation = new ChargeStation
+                    try
                     {
-                        ChargerType = (ChargerType)charger.chargerType,
-                        Name = charger.chargerName,
-                        PricePerHour = charger.pricePerHour,
-                        QuickCharge = charger.quickcharge,
-                        Adres = adresResult,
-                        Owner = chargerOwner
-                    };
+                        ChargeStation newChargeStation = new ChargeStation
+                        {
+                            ChargerType = (ChargerType)charger.chargerType,
+                            Name = charger.chargerName,
+                            PricePerHour = charger.pricePerHour,
+                            QuickCharge = charger.quickcharge,
+                            Adres = adresResult
+                        };
 
-                    var result = await _repository.SaveChargeStationAsync(newChargeStation);
-                    return Ok(result);
+                        var result = await _repository.SaveChargeStationAsync(newChargeStation, charger.OwnerEmail);
+
+                        return Ok(result);
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(e.Message + e.InnerException);
+                    }
+
+                    
                 }
                 catch (Exception e)
                 {
