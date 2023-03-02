@@ -29,7 +29,6 @@ namespace ChargeSharedProto2.Controllers
         }
 
         // GET: api/chargers
-        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<ChargeStation>> Get()
         {
