@@ -21,7 +21,7 @@ namespace ChargeSharedProto2.Data.Repositories
          */
         public async Task<IEnumerable<ChargeStation>> GetAllAsync()
         {
-            return _context.Chargers;
+            return _context.Chargers.Include(c => c.Adres);
         }
 
         public ChargeStation GetChargerById(int id)
