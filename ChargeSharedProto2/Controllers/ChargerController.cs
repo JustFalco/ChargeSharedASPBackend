@@ -14,6 +14,8 @@ namespace ChargeSharedProto2.Controllers
     [ApiController]
     public class ChargerController : ControllerBase
     {
+        [BindProperty(SupportsGet = true)]
+        public Filters filters { get; set; }
         private readonly IChargeStationRepository _repository;
         private readonly IAdresService _adresService;
         private readonly IAdresRepository _adresRepository;
@@ -29,14 +31,13 @@ namespace ChargeSharedProto2.Controllers
         }
 
         // GET: api/chargers
-        
-
-        public async Task<IActionResult> GetChargersWithFilters([FromBody] Filters filters)
+        [HttpGet]
+        public async Task<IActionResult> GetChargersWithFilters()
         {
             if (ModelState.IsValid)
             {
                 var result = await _repository.GetAllWithFilter(filters);
-
+        
                 return Ok(result);
             }
             else
@@ -45,7 +46,7 @@ namespace ChargeSharedProto2.Controllers
                 {
                     ModelState.AddModelError(error.Code, error.Description);
                 }
-
+        
                 return BadRequest("Could not get charging stations!");
             }
         }

@@ -82,7 +82,7 @@ namespace ChargeSharedProto2.Data.Repositories
                         c.Adres.PostalCode == filters.adresPostalCity || c.Adres.Street == filters.adresPostalCity ||
                         c.Adres.City == filters.adresPostalCity);
                 }
-
+                
                 if (filters.maxPrice >= 0)
                 {
                     result = result.Where(c => c.PricePerHour <= filters.maxPrice);
