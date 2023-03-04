@@ -29,10 +29,25 @@ namespace ChargeSharedProto2.Controllers
         }
 
         // GET: api/chargers
-        [HttpGet]
-        public async Task<IEnumerable<ChargeStation>> Get()
+        
+
+        public async Task<IActionResult> GetChargersWithFilters([FromBody] Filters filters)
         {
-            return await _repository.GetAllAsync();
+            if (ModelState.IsValid)
+            {
+                var result = await _repository.GetAllWithFilter(filters);
+
+                return Ok(result);
+            }
+            else
+            {
+                foreach (var error in _errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+
+                return BadRequest("Could not get charging stations!");
+            }
         }
 
         // GET api/<ChargerController>/5

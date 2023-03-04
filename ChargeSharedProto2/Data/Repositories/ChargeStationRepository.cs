@@ -1,4 +1,5 @@
 ﻿using ChargeSharedProto2.Data.Contexts;
+using ChargeSharedProto2.Data.DTOs;
 using ChargeSharedProto2.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +66,36 @@ namespace ChargeSharedProto2.Data.Repositories
         {
             //TODO add checks
             _context.Chargers.Where(c => c.Id == id).ExecuteDelete();
+        }
+
+        public async Task<IEnumerable<ChargeStation>> GetAllWithFilter(Filters filters)
+        {
+            var allChargers = await GetAllAsync();
+            
+            var result = allChargers;
+
+            if (filters.useFilters)
+            {
+                if (!string.IsNullOrEmpty(filters.adresPostalCity))
+                {
+                    result = result.Where(c =>
+                        c.Adres.PostalCode == filters.adresPostalCity || c.Adres.Street == filters.adresPostalCity ||
+                        c.Adres.City == filters.adresPostalCity);
+                }
+
+                if (filters.maxPrice >= 0)
+                {
+                    result = result.Where(c => c.PricePerHour <= filters.maxPrice);
+                }
+
+                if (filters.chargerType != ChargerType.Null)
+                {
+                    result = result.Where(c => c.ChargerType == filters.chargerType);
+                }  
+            }
+            
+                       
+            return result;
         }
     }
 }

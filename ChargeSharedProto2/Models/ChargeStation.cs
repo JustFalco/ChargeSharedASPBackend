@@ -31,6 +31,8 @@ namespace ChargeSharedProto2.Models
         CCS_Combo_2 = 3,
         CHAdeMO = 4,
         Tesla = 5,
-        Wall_Outlet = 6
+        Wall_Outlet = 6,
+        Null = 10
+        
     }
 }
