@@ -11,8 +11,8 @@ public class Filters
 
     public string? adresPostalCity { get; set; } = "";
 
-    public bool filterMaxPrice { get; set; } = false;
-    public double? maxPrice { get; set; } = -1;
+    public double? minPrice { get; set; } = Double.MinValue;
+    public double? maxPrice { get; set; } = Double.MaxValue;
     public ChargerType chargerType { get; set; } = ChargerType.Null;
 
     public bool filterFastCharge { get; set; } = false;
